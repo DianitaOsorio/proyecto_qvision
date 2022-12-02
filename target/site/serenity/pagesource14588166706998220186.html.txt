@@ -1,0 +1,182 @@
+<html><head><style type="text/css">@charset "UTF-8";[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>
+    <meta charset="utf-8">
+    <title ng-bind="pageTitle" class="ng-binding">Home — Conduit</title>
+    <link href="//code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet" type="text/css">
+    <link href="//fonts.googleapis.com/css?family=Titillium+Web:700|Source+Serif+Pro:400,700|Merriweather+Sans:400,700|Source+Sans+Pro:400,300,600,700,300italic,400italic,600italic,700italic" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="main.css">
+  </head>
+  <body>
+
+    <!-- uiView:  --><div ui-view="" class="ng-scope"><app-header class="ng-scope ng-isolate-scope"><nav class="navbar navbar-light">
+  <div class="container">
+
+    <a class="navbar-brand ng-binding" ui-sref="app.home" ng-bind="::$ctrl.appName | lowercase" href="#/">conduit</a>
+
+    <!-- Show this for logged out users -->
+    <ul show-authed="false" class="nav navbar-nav pull-xs-right" style="display: none;">
+
+      <li class="nav-item">
+        <a class="nav-link active" ui-sref-active="active" ui-sref="app.home" href="#/">
+          Home
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" ui-sref-active="active" ui-sref="app.login" href="#/login">
+          Sign in
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" ui-sref-active="active" ui-sref="app.register" href="#/register">
+          Sign up
+        </a>
+
+    </li></ul>
+
+    <!-- Show this for logged in users -->
+    <ul show-authed="true" class="nav navbar-nav pull-xs-right" style="display: inherit;">
+
+      <li class="nav-item">
+        <a class="nav-link active" ui-sref-active="active" ui-sref="app.home" href="#/">
+          Home
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" ui-sref-active="active" ui-sref="app.editor" href="#/editor/">
+          <i class="ion-compose"></i>&nbsp;New Article
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" ui-sref-active="active" ui-sref="app.settings" href="#/settings">
+          <i class="ion-gear-a"></i>&nbsp;Settings
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link ng-binding" ui-sref-active="active" ui-sref="app.profile.main({ username: $ctrl.currentUser.username })" href="#/@Patricia%20Osorio%20B">
+          <img class="user-pic" ng-src="https://api.realworld.io/images/smiley-cyrus.jpeg" src="https://api.realworld.io/images/smiley-cyrus.jpeg">
+          Patricia Osorio B
+        </a>
+      </li>
+
+    </ul>
+
+
+  </div>
+</nav>
+</app-header>
+
+<!-- uiView:  --><div ui-view="" class="ng-scope"> <div class="home-page ng-scope">
+
+  <!-- Splash banner that only shows when not logged in -->
+  <div class="banner" show-authed="false" style="display: none;">
+    <div class="container">
+      <h1 class="logo-font ng-binding" ng-bind="::$ctrl.appName | lowercase">conduit</h1>
+      <p>A place to share your knowledge.</p>
+    </div>
+  </div>
+
+  <div class="container page">
+    <div class="row">
+
+
+      <!-- Main view - contains tabs & article list -->
+      <div class="col-md-9">
+        <!-- Tabs for toggling between feed, article lists -->
+        <div class="feed-toggle">
+          <ul class="nav nav-pills outline-active">
+
+            <li class="nav-item" show-authed="true" style="display: inherit;">
+              <a href="" class="nav-link active" ng-class="{ active: $ctrl.listConfig.type === 'feed' }" ng-click="$ctrl.changeList({ type: 'feed' })">
+                Your Feed
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a href="" class="nav-link" ng-class="{ active: $ctrl.listConfig.type === 'all' &amp;&amp; !$ctrl.listConfig.filters }" ng-click="$ctrl.changeList({ type: 'all' })">
+                Global Feed
+              </a>
+            </li>
+
+            <li class="nav-item ng-hide" ng-show="$ctrl.listConfig.filters.tag">
+              <a href="" class="nav-link active ng-binding">
+                <i class="ion-pound"></i> 
+              </a>
+            </li>
+
+          </ul>
+        </div>
+
+        <!-- List the current articles -->
+        <article-list limit="10" list-config="$ctrl.listConfig" class="ng-isolate-scope"><!-- ngRepeat: article in $ctrl.list -->
+
+<div class="article-preview ng-hide" ng-hide="!$ctrl.loading">
+  Loading articles...
+</div>
+
+<div class="article-preview" ng-show="!$ctrl.loading &amp;&amp; !$ctrl.list.length">
+  No articles are here... yet.
+</div>
+
+<list-pagination total-pages="$ctrl.listConfig.totalPages" current-page="$ctrl.listConfig.currentPage" ng-hide="$ctrl.listConfig.totalPages <= 1" class="ng-isolate-scope ng-hide"><nav>
+  <ul class="pagination">
+
+    <!-- ngRepeat: pageNumber in $ctrl.pageRange($ctrl.totalPages) -->
+
+  </ul>
+</nav>
+</list-pagination>
+</article-list>
+
+      </div>
+
+      <!-- Sidebar where popular tags are listed -->
+      <div class="col-md-3">
+        <div class="sidebar">
+
+          <p>Popular Tags</p>
+
+          <div class="tag-list" ng-show="$ctrl.tags">
+            <!-- ngRepeat: tagName in $ctrl.tags --><a href="" class="tag-default tag-pill ng-binding ng-scope" ng-click="$ctrl.changeList({ type: 'all', filters: { tag: tagName } })" ng-repeat="tagName in $ctrl.tags" ng-bind="tagName">implementations</a><!-- end ngRepeat: tagName in $ctrl.tags --><a href="" class="tag-default tag-pill ng-binding ng-scope" ng-click="$ctrl.changeList({ type: 'all', filters: { tag: tagName } })" ng-repeat="tagName in $ctrl.tags" ng-bind="tagName">welcome</a><!-- end ngRepeat: tagName in $ctrl.tags --><a href="" class="tag-default tag-pill ng-binding ng-scope" ng-click="$ctrl.changeList({ type: 'all', filters: { tag: tagName } })" ng-repeat="tagName in $ctrl.tags" ng-bind="tagName">introduction</a><!-- end ngRepeat: tagName in $ctrl.tags --><a href="" class="tag-default tag-pill ng-binding ng-scope" ng-click="$ctrl.changeList({ type: 'all', filters: { tag: tagName } })" ng-repeat="tagName in $ctrl.tags" ng-bind="tagName">codebaseShow</a><!-- end ngRepeat: tagName in $ctrl.tags --><a href="" class="tag-default tag-pill ng-binding ng-scope" ng-click="$ctrl.changeList({ type: 'all', filters: { tag: tagName } })" ng-repeat="tagName in $ctrl.tags" ng-bind="tagName">ipsum</a><!-- end ngRepeat: tagName in $ctrl.tags --><a href="" class="tag-default tag-pill ng-binding ng-scope" ng-click="$ctrl.changeList({ type: 'all', filters: { tag: tagName } })" ng-repeat="tagName in $ctrl.tags" ng-bind="tagName">qui</a><!-- end ngRepeat: tagName in $ctrl.tags --><a href="" class="tag-default tag-pill ng-binding ng-scope" ng-click="$ctrl.changeList({ type: 'all', filters: { tag: tagName } })" ng-repeat="tagName in $ctrl.tags" ng-bind="tagName">et</a><!-- end ngRepeat: tagName in $ctrl.tags --><a href="" class="tag-default tag-pill ng-binding ng-scope" ng-click="$ctrl.changeList({ type: 'all', filters: { tag: tagName } })" ng-repeat="tagName in $ctrl.tags" ng-bind="tagName">quia</a><!-- end ngRepeat: tagName in $ctrl.tags --><a href="" class="tag-default tag-pill ng-binding ng-scope" ng-click="$ctrl.changeList({ type: 'all', filters: { tag: tagName } })" ng-repeat="tagName in $ctrl.tags" ng-bind="tagName">cupiditate</a><!-- end ngRepeat: tagName in $ctrl.tags --><a href="" class="tag-default tag-pill ng-binding ng-scope" ng-click="$ctrl.changeList({ type: 'all', filters: { tag: tagName } })" ng-repeat="tagName in $ctrl.tags" ng-bind="tagName">deserunt</a><!-- end ngRepeat: tagName in $ctrl.tags -->
+          </div>
+
+          <div ng-show="!$ctrl.tagsLoaded" class="ng-hide">
+            Loading tags...
+          </div>
+
+          <div class="post-preview ng-hide" ng-show="$ctrl.tagsLoaded &amp;&amp; !$ctrl.tags.length">
+            No tags are here... yet.
+          </div>
+
+        </div>
+      </div>
+
+      <!-- End the row & container divs -->
+    </div>
+  </div>
+
+</div>
+</div>
+
+<app-footer class="ng-scope ng-isolate-scope"><footer>
+  <div class="container">
+    <a class="logo-font ng-binding" ui-sref="app.home" ng-bind="::$ctrl.appName | lowercase" href="#/">conduit</a>
+    <span class="attribution ng-binding">
+      © 2022.
+      An interactive learning project from <a href="https://thinkster.io">Thinkster</a>.
+      Code licensed under MIT.
+    </span>
+  </div>
+</footer>
+</app-footer>
+</div>
+
+    <script src="main.js"></script>
+
+    <a href="https://github.com/gothinkster/angularjs-realworld-example-app" target="_blank" style="position:fixed;bottom:0;width:100%;background:linear-gradient(#485563, #29323c);text-align: center;padding:15px;box-shadow:0 5px 5px 5px rgba(0,0,0,0.4);z-index:999;color:#fff;font-size:1.5rem;display:block"><i class="ion-social-github"></i>&nbsp;&nbsp;Fork on GitHub</a>
+  
+
+</body></html>
